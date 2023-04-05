@@ -3,15 +3,17 @@
 /**
  * free_listint - frees a linked list
  * @head: head of a list
- * Return: Nothing
+ * Return: no return
  */
 void free_listint(listint_t *head)
 {
 	listint_t *temp;
 
-	while ((temp = head) != NULL)
+	while (head)
 	{
+		temp = head;
 		head = head->next;
 		free(temp);
 	}
+	free(head);
 }
