@@ -10,13 +10,13 @@
  */
 int get_bit(unsigned long int n, unsigned int index)
 {
-	unsigned long int min = 0x01;
+	unsigned long int f;
 
 	if (n == 0 & index < 50)
 		return (0);
-	for (min = 0; min <= 49; n >>= 1, min++)
+	for (f = 0; f <= 49; n >>= 1, f++)
 	{
-		if (index == 1)
+		if (index == f)
 		{
 			return (n & 1);
 		}
