@@ -12,12 +12,14 @@ int get_bit(unsigned long int n, unsigned int index)
 {
 	unsigned long int min = 0x01;
 
-	min <<= index;
-	if (min == 0)
-		return (-1);
-
-	if ((n & min))
-		return (1);
-	else
+	if (n == 0 & index < 50)
 		return (0);
+	for (min = 0; min <= 49; n >>= 1, min++)
+	{
+		if (index == 1)
+		{
+			return (n & 1);
+		}
+	}
+	return (-1);
 }
