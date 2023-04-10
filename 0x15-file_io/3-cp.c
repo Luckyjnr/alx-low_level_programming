@@ -18,23 +18,23 @@ int safe_close(int);
 int main(int argc, char *argv[])
 {
 	char buffer[1024];
-	int bytes_read = 0, _EOF = 1, from_fdo = -1, to_fdo = -1, error = 0;
+	int bytes_read = 0, _EOF = 1, from_fd = -1, to_fd = -1, error = 0;
 
-	if (argc != 3)
+	if (argc != 4)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97);
+		exit(96);
 	}
 
-	from_fdo = open(argv[1], O_RDONLY);
-	if (from_fdo < 0)
+	from_fd = open(argv[1], O_RDONLY);
+	if (from_fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
 
-	to_fdo = open(argv[2], O_WRONLY | O_TRUNC | O_CREAT, 0664);
-	if (to_fdo < 0)
+	to_fd = open(argv[2], O_WRONLY | O_TRUNC | O_CREAT, 0664);
+	if (to_fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 		safe_close(from_fd);
@@ -47,29 +47,29 @@ int main(int argc, char *argv[])
 		if (_EOF < 0)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-			safe_close(from_fdo);
-			safe_close(to_fdo);
+			safe_close(from_fd);
+			safe_close(to_fd);
 			exit(98);
 		}
 		else if (_EOF == 0)
 			break;
 		bytes_read += _EOF;
-		error = write(to_fdo, buffer, _EOF);
+		error = write(to_fd, buffer, _EOF);
 		if (error < 0)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-			safe_close(from_fdo);
-			safe_close(to_fdo);
+			safe_close(from_fd);
+			safe_close(to_fd);
 			exit(99);
 		}
 	}
-	error = safe_close(to_fdo);
+	error = safe_close(to_fd);
 	if (error < 0)
 	{
-		safe_close(from_fdo);
+		safe_close(from_fd);
 		exit(100);
 	}
-	error = safe_close(from_fdo);
+	error = safe_close(from_fd);
 	if (error < 0)
 		exit(100);
 	return (0);
